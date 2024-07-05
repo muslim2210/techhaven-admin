@@ -44,7 +44,7 @@ export const POST = async (req: NextRequest) => {
     const { title, description, category, media, tags, brand, colors, price } =
       await req.json();
 
-    if (!title || !description || !media || !price || !brand) {
+    if (!title || !description || !price || !brand) {
       return new NextResponse("Not enough data to create a product", {
         status: 400,
       });
@@ -69,7 +69,10 @@ export const POST = async (req: NextRequest) => {
       await cat.save();
     }
 
-    return NextResponse.json(newProduct, { status: 200 });
+    return NextResponse.json(newProduct, {
+      status: 200,
+      headers: getCorsHeaders(req.headers.get("origin") || ""),
+    });
   } catch (err) {
     console.log("[products_POST]", err);
     return new NextResponse("Internal Error", { status: 500 });

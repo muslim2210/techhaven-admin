@@ -148,7 +148,10 @@ export const POST = async (
     //   await remove.save();
     // }
 
-    return NextResponse.json(updatedProduct, { status: 200 });
+    return NextResponse.json(updatedProduct, {
+      status: 200,
+      headers: getCorsHeaders(req.headers.get("origin") || ""),
+    });
   } catch (err) {
     console.log("[productId_POST]", err);
     return new NextResponse("Internal error", { status: 500 });
@@ -185,6 +188,7 @@ export const DELETE = async (
 
     return new NextResponse(JSON.stringify({ message: "Product deleted" }), {
       status: 200,
+      headers: getCorsHeaders(req.headers.get("origin") || ""),
     });
   } catch (err) {
     console.log("[productId_DELETE]", err);
